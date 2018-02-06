@@ -178,6 +178,13 @@ public abstract class RSActorMixin implements RSActor
 		return Perspective.worldToMiniMap(client, getX(), getY());
 	}
 
+	@Inject
+	@Override
+	public Point getNextPathLocation()
+	{
+		return new Point(this.getPathX()[0], this.getPathY()[0]);
+	}
+
 	@FieldHook("animation")
 	@Inject
 	public void animationChanged(int idx)

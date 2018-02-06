@@ -62,6 +62,8 @@ public interface Actor extends Renderable
 
 	Point getMinimapLocation();
 
+	Point getNextPathLocation();
+
 	Point getRegionLocation();
 
 	/**
