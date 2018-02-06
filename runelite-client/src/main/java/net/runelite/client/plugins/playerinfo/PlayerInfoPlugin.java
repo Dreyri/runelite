@@ -6,6 +6,7 @@ import net.runelite.api.Client;
 import net.runelite.api.GameState;
 import net.runelite.api.Player;
 import net.runelite.api.events.GameStateChanged;
+import net.runelite.api.events.GameTick;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
@@ -59,6 +60,12 @@ public class PlayerInfoPlugin extends Plugin
 				}
 			}
 		}
+	}
+
+	@Subscribe
+	public void onTick(GameTick event)
+	{
+		localPlayer.tick();
 	}
 
 	@Override

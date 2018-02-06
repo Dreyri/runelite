@@ -47,6 +47,13 @@ public class PlayerAdapter
 
 	public void tick()
 	{
+		Point newLocation = new Point(this.player.getNextPathLocation().getX(), this.player.getNextPathLocation().getY());
 
+		if (newLocation != this.localTilePosition)
+		{
+			//TODO send move event
+			this.localTilePosition = newLocation;
+			System.out.println(this.localTilePosition);
+		}
 	}
 }
