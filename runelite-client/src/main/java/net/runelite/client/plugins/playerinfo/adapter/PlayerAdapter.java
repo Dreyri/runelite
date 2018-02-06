@@ -106,9 +106,10 @@ public class PlayerAdapter
 		//handle freeze immunity
 		if (isFreezeImmune)
 		{
-			--this.remainingFreezeImmunity;
 
-			if (this.remainingFreezeImmunity <= 0)
+			log.info("remaining immunity " + this.remainingFreezeImmunity);
+
+			if (this.remainingFreezeImmunity-- <= 0)
 			{
 				this.isFreezeImmune = false;
 				log.info("You are no longer immune to freezes");
