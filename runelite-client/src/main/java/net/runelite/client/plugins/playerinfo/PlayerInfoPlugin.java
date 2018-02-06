@@ -2,11 +2,16 @@ package net.runelite.client.plugins.playerinfo;
 
 import com.google.common.eventbus.Subscribe;
 import com.google.inject.Provides;
+import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
 import net.runelite.api.Player;
+import net.runelite.api.Projectile;
+import net.runelite.api.events.AnimationChanged;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GameTick;
+import net.runelite.api.events.GraphicChanged;
+import net.runelite.api.events.ProjectileMoved;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
@@ -67,6 +72,19 @@ public class PlayerInfoPlugin extends Plugin
 	public void onTick(GameTick event)
 	{
 		localPlayer.tick();
+	}
+
+	@Subscribe
+	public void onAnimationChange(GraphicChanged event)
+	{
+		if (localPlayer.getPlayer() == null)
+		{
+			return;
+		}
+		if (event.getActor() == localPlayer.getPlayer())
+		{
+			localPlayer.animationChanged();
+		}
 	}
 
 	@Override
