@@ -37,6 +37,16 @@ public class PlayerAdapter
 		this(client.getPlayerFromCache(idx), idx);
 	}
 
+	public Player getPlayer()
+	{
+		return this.player;
+	}
+
+	public int getCacheIndex()
+	{
+		return this.cacheIdx;
+	}
+
 	@Subscribe
 	public void gameTick(GameTick tick)
 	{

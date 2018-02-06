@@ -3,6 +3,8 @@ package net.runelite.client.plugins.playerinfo;
 import com.google.common.eventbus.Subscribe;
 import com.google.inject.Provides;
 import net.runelite.api.Client;
+import net.runelite.api.GameState;
+import net.runelite.api.Player;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.plugins.Plugin;
@@ -22,11 +24,11 @@ public class PlayerInfoPlugin extends Plugin
 	@Inject
 	private PlayerInfoConfig config;
 
-	private PlayerInfoOverlay playerInfoOverlay;
+	PlayerInfoOverlay playerInfoOverlay;
 
 	private PlayerAdapter localPlayer;
 
-	private PlayerInfoPlugin()
+	public PlayerInfoPlugin()
 	{
 		localPlayer = null;
 	}
@@ -40,9 +42,22 @@ public class PlayerInfoPlugin extends Plugin
 	@Subscribe
 	public void onGameStateChanged(GameStateChanged event)
 	{
-		if (localPlayer == null)
+		if (event.getGameState() == GameState.HOPPING || event.getGameState() == GameState.LOGIN_SCREEN)
 		{
-			localPlayer = new PlayerAdapter(client.getLocalPlayer());
+			localPlayer = null;
+		}
+
+		if (event.getGameState() == GameState.LOGGED_IN)
+		{
+			if (localPlayer == null)
+			{
+				Player self = client.getLocalPlayer();
+
+				if (self != null)
+				{
+					localPlayer = new PlayerAdapter(self);
+				}
+			}
 		}
 	}
 
