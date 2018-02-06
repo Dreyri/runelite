@@ -34,7 +34,11 @@ public interface Client extends GameEngine
 {
 	List<Player> getPlayers();
 
+	Player getPlayerFromCache(int idx);
+
 	List<NPC> getNpcs();
+
+	NPC getNPCFromCache(int idx);
 
 	int getBoostedSkillLevel(Skill skill);
 

@@ -88,6 +88,13 @@ public abstract class RSClientMixin implements RSClient
 
 	@Inject
 	@Override
+	public Player getPlayerFromCache(int idx)
+	{
+		return client.getCachedPlayers()[idx];
+	}
+
+	@Inject
+	@Override
 	public List<NPC> getNpcs()
 	{
 		int validNpcIndexes = getNpcIndexesCount();
@@ -101,6 +108,13 @@ public abstract class RSClientMixin implements RSClient
 		}
 
 		return npcs;
+	}
+
+	@Inject
+	@Override
+	public NPC getNPCFromCache(int idx)
+	{
+		return client.getCachedNPCs()[idx];
 	}
 
 	@Inject
