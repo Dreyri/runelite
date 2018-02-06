@@ -1,4 +1,4 @@
-package net.runelite.client.plugins.playerinfo;
+package net.runelite.client.plugins.playerinfo.adapter;
 
 import net.runelite.api.Client;
 import net.runelite.api.Player;
