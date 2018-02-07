@@ -1,21 +1,17 @@
-package net.runelite.client.plugins.playerinfo;
+package net.runelite.client.plugins.buffbar;
 
 import com.google.common.eventbus.Subscribe;
 import com.google.inject.Provides;
-import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
 import net.runelite.api.Player;
-import net.runelite.api.Projectile;
-import net.runelite.api.events.AnimationChanged;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.GraphicChanged;
-import net.runelite.api.events.ProjectileMoved;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
-import net.runelite.client.plugins.playerinfo.adapter.PlayerAdapter;
+import net.runelite.client.plugins.buffbar.adapter.PlayerAdapter;
 import net.runelite.client.ui.overlay.Overlay;
 
 import javax.inject.Inject;

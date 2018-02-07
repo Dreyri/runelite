@@ -1,11 +1,11 @@
-package net.runelite.client.plugins.playerinfo;
+package net.runelite.client.plugins.buffbar;
 
 import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
 
 @ConfigGroup(
-		keyName = "playerinfo",
+		keyName = "buffbar",
 		name = "Player info",
 		description = "Configure Player info to display"
 )

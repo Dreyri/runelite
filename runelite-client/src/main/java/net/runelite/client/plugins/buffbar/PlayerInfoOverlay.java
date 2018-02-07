@@ -1,9 +1,9 @@
-package net.runelite.client.plugins.playerinfo;
+package net.runelite.client.plugins.buffbar;
 
 import net.runelite.api.Client;
 import net.runelite.api.Perspective;
 import net.runelite.api.Player;
-import net.runelite.client.plugins.playerinfo.adapter.PlayerAdapter;
+import net.runelite.client.plugins.buffbar.adapter.PlayerAdapter;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;

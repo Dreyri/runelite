@@ -1,4 +1,4 @@
-package net.runelite.client.plugins.playerinfo.adapter;
+package net.runelite.client.plugins.buffbar.adapter;
 
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;

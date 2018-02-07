@@ -22,33 +22,11 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.playerinfo.buffbar;
+package net.runelite.client.plugins.buffbar;
 
-import java.awt.image.BufferedImage;
-
-public interface Buff
+public enum BuffType
 {
-	/**
-	 * the type of buff, buffs are green, debuffs red
-	 * @return the type of buff this is
-	 */
-	BuffType getType();
-
-	/**
-	 * whether the buff is currently active or not
-	 * @return true if active
-	 */
-	boolean isActive();
-
-	/**
-	 * the buff text to display, this is information for the current active buff, not a description
-	 * @return buff text
-	 */
-	String getText();
-
-	/**
-	 * icon to to be displayed for the buff
-	 * @return the icon to be used
-	 */
-	BufferedImage getIcon();
+	BUFF,
+	DEBUFF,
+	INFO
 }

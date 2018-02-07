@@ -22,70 +22,33 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.playerinfo.buffbar;
+package net.runelite.client.plugins.buffbar;
 
-public abstract class TimerBuff implements Buff
+import java.awt.image.BufferedImage;
+
+public class FreezeBuff extends TimerBuff
 {
-	private boolean useTicks;
-
-	public TimerBuff()
+	@Override
+	public int getTicks()
 	{
-		this(true);
+		return 0;
 	}
 
-	public TimerBuff(boolean useTicks)
+	@Override
+	public BuffType getType()
 	{
-		this.useTicks = useTicks;
+		return BuffType.DEBUFF;
 	}
 
-	public boolean usingTicks()
+	@Override
+	public boolean isActive()
 	{
-		return useTicks;
+		return false;
 	}
 
-	public void useTicks(boolean useTicks)
+	@Override
+	public BufferedImage getIcon()
 	{
-		this.useTicks = useTicks;
-	}
-
-	public abstract int getTicks();
-
-	public int getSeconds()
-	{
-		int ticks = getTicks();
-
-		return (int)((float)ticks / 0.6f);
-	}
-
-	public String getText()
-	{
-
-		if (useTicks)
-		{
-			int ticks = getTicks();
-			return String.valueOf(ticks);
-		}
-		else
-		{
-			int seconds = getSeconds();
-			return secondsToHoursMinutesSeconds(seconds);
-		}
-
-	}
-
-	public static String secondsToHoursMinutesSeconds(int seconds)
-	{
-		if (seconds < 60)
-		{
-			return String.valueOf(seconds);
-		}
-		else if (seconds < 3600)
-		{
-			return String.format("%d:%02d", seconds / 60, seconds % 60);
-		}
-		else
-		{
-			return String.format("%d:%02d:%02d", seconds / 3600, (seconds % 3600) / 60, seconds % 60);
-		}
+		return null;
 	}
 }
