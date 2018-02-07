@@ -38,16 +38,28 @@ public abstract class TimerBuff implements Buff
 		this.useTicks = useTicks;
 	}
 
+	/**
+	 * whether we are using ticks or seconds to display the remaining time
+	 * @return true if ticks
+	 */
 	public boolean usingTicks()
 	{
 		return useTicks;
 	}
 
+	/**
+	 * set if we want to display time remaining in ticks or seconds
+	 * @param useTicks true if ticks
+	 */
 	public void useTicks(boolean useTicks)
 	{
 		this.useTicks = useTicks;
 	}
 
+	/**
+	 * get the amount of ticks to display
+	 * @return
+	 */
 	public abstract int getTicks();
 
 	public int getSeconds()
