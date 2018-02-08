@@ -25,7 +25,10 @@
 package net.runelite.client.plugins.buffbar;
 
 import com.google.common.eventbus.Subscribe;
+import net.runelite.api.Client;
 import net.runelite.api.GameState;
+import net.runelite.api.NPC;
+import net.runelite.api.Player;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.VarbitChanged;
 import net.runelite.client.plugins.buffbar.adapter.LocalPlayer;
@@ -36,6 +39,8 @@ import java.util.List;
 
 public class AdapterManager
 {
+	private Client client;
+
 	private LocalPlayer localPlayer;
 
 	private List<PlayerAdapterImpl> playerAdapters;
@@ -46,6 +51,10 @@ public class AdapterManager
 	 */
 	private GameState lastGameState;
 
+	public AdapterManager(Client client)
+	{
+		this.client = client;
+	}
 
 	@Subscribe
 	public void onVarbitsChanged(VarbitChanged event)
@@ -68,9 +77,19 @@ public class AdapterManager
 		}
 	}
 
+	/**
+	 * populate the npc list, the list is expected to be empty for this
+	 */
 	public void populateNPCs()
 	{
-		//TODO
+		if (npcAdapters.size() > 0)
+		{
+			throw new IllegalStateException("npcAdapters must be empty before populating");
+		}
+
+		List<NPC> allCachedNPCs = client.getNpcs();
+
+
 	}
 
 	public void populatePlayers()

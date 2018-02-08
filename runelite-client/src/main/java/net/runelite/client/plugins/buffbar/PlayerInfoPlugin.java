@@ -91,7 +91,7 @@ public class PlayerInfoPlugin extends Plugin
 	@Subscribe
 	public void onTick(GameTick event)
 	{
-		localPlayer.tick();
+		//localPlayer.tick();
 	}
 
 	@Subscribe
