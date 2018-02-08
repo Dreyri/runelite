@@ -4,7 +4,6 @@ import com.google.common.eventbus.Subscribe;
 import net.runelite.api.GameState;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.VarbitChanged;
-import net.runelite.client.plugins.buffbar.adapter.Adapter;
 import net.runelite.client.plugins.buffbar.adapter.LocalPlayer;
 import net.runelite.client.plugins.buffbar.adapter.NPCAdapter;
 import net.runelite.client.plugins.buffbar.adapter.PlayerAdapterImpl;
@@ -37,6 +36,27 @@ public class AdapterManager
 		{
 			this.clearNPCs();
 		}
+		else if (event.getGameState() == GameState.LOGGED_IN && lastGameState != GameState.LOADING)
+		{
+			this.populateNPCs();
+			this.populatePlayers();
+			this.getLocalPlayer();
+		}
+	}
+
+	public void populateNPCs()
+	{
+		//TODO
+	}
+
+	public void populatePlayers()
+	{
+		//TODO
+	}
+
+	public void getLocalPlayer()
+	{
+		//TODO
 	}
 
 	public void clearNPCs()

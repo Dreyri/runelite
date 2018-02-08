@@ -10,4 +10,8 @@ public interface Adapter
 	boolean removeBroadcaster(Broadcaster bc);
 
 	Renderable getAdaptee();
+
+	boolean isValid();
+
+	void invalidate();
 }

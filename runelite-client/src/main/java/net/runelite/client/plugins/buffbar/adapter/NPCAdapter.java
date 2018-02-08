@@ -1,18 +1,28 @@
 package net.runelite.client.plugins.buffbar.adapter;
 
-import net.runelite.client.plugins.buffbar.Broadcaster;
+import net.runelite.api.NPC;
+import net.runelite.api.Renderable;
 
-public class NPCAdapter implements Adapter
+public class NPCAdapter extends BaseAdapter
 {
-	@Override
-	public void addBroadcaster(Broadcaster bc)
-	{
+	private NPC npc;
 
+	public NPCAdapter(NPC npc)
+	{
+		this.npc = npc;
 	}
 
 	@Override
-	public boolean removeBroadcaster(Broadcaster bc)
+	public Renderable getAdaptee()
 	{
-		return false;
+		return this.npc;
+	}
+
+	@Override
+	public void invalidate()
+	{
+		super.invalidate();
+
+		this.npc = null;
 	}
 }
