@@ -97,7 +97,7 @@ public class PlayerInfoPlugin extends Plugin
 	@Subscribe
 	public void onAnimationChange(GraphicChanged event)
 	{
-		if (localPlayer.getPlayer() == null)
+		if (localPlayer == null || localPlayer.getPlayer() == null)
 		{
 			return;
 		}
