@@ -6,7 +6,7 @@ import net.runelite.client.plugins.buffbar.Broadcaster;
 
 import java.util.List;
 
-public class PlayerAdapterImpl {
+public class PlayerAdapterImpl implements Adapter {
 
 	private String name;
 	private Player player;
@@ -19,6 +19,7 @@ public class PlayerAdapterImpl {
 		this.player = player;
 	}
 
+	@Override
 	public void addBroadcaster(Broadcaster broadcaster)
 	{
 		if (!broadcaster.accept(getAdaptee()))
@@ -27,6 +28,12 @@ public class PlayerAdapterImpl {
 		}
 
 		broadcasters.add(broadcaster);
+	}
+
+	@Override
+	public boolean removeBroadcaster(Broadcaster broadcaster)
+	{
+		return broadcasters.remove(broadcaster);
 	}
 
 	public Renderable getAdaptee()
