@@ -6,6 +6,7 @@ import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.VarbitChanged;
 import net.runelite.client.plugins.buffbar.adapter.Adapter;
 import net.runelite.client.plugins.buffbar.adapter.LocalPlayer;
+import net.runelite.client.plugins.buffbar.adapter.PlayerAdapterImpl;
 
 import java.util.List;
 
@@ -13,7 +14,8 @@ public class AdapterManager
 {
 	private LocalPlayer localPlayer;
 
-	private List<Adapter> adapters;
+	private List<PlayerAdapterImpl> playerAdapters;
+	private List<NPCAdapter> npcAdapters;
 
 	/**
 	 * necessary for now to avoid reloading after every loading gamestate
@@ -30,6 +32,14 @@ public class AdapterManager
 	@Subscribe
 	public void onGamestateChanged(GameStateChanged event)
 	{
+		if (event.getGameState() == GameState.HOPPING)
+		{
+			this.clearNPCs();
+		}
+	}
 
+	public void clearNPCs()
+	{
+		//TODO
 	}
 }
