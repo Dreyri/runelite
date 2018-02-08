@@ -36,6 +36,7 @@ public class PlayerAdapterImpl implements Adapter {
 		return broadcasters.remove(broadcaster);
 	}
 
+	@Override
 	public Renderable getAdaptee()
 	{
 		return player;

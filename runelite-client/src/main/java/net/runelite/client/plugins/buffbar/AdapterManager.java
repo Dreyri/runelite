@@ -6,6 +6,7 @@ import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.VarbitChanged;
 import net.runelite.client.plugins.buffbar.adapter.Adapter;
 import net.runelite.client.plugins.buffbar.adapter.LocalPlayer;
+import net.runelite.client.plugins.buffbar.adapter.NPCAdapter;
 import net.runelite.client.plugins.buffbar.adapter.PlayerAdapterImpl;
 
 import java.util.List;
