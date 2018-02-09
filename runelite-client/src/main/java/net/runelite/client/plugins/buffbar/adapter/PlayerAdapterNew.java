@@ -16,7 +16,7 @@ public class PlayerAdapterNew extends BaseAdapter
 		this.player = player;
 		retrieveName();
 
-		this.freeze = new FreezeBroadcaster();
+		this.freeze = new FreezeBroadcaster(this);
 	}
 
 	public void onGraphicChanged(int graphic)
