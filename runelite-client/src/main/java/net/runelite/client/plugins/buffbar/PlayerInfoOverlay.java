@@ -45,11 +45,15 @@ public class PlayerInfoOverlay extends Overlay
 	PlayerInfoConfig config;
 	PlayerInfoPlugin plugin;
 
+	Buffbar buffbar;
+
 	public PlayerInfoOverlay(Client client, PlayerInfoConfig config, PlayerInfoPlugin plugin)
 	{
 		this.client = client;
 		this.config = config;
 		this.plugin = plugin;
+
+		this.buffbar = new Buffbar();
 
 		setPosition(OverlayPosition.DYNAMIC);
 		setLayer(OverlayLayer.ALWAYS_ON_TOP);
