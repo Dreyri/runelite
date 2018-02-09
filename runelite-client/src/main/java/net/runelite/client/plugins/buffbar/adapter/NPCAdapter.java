@@ -43,6 +43,28 @@ public class NPCAdapter extends BaseAdapter
 	}
 
 	@Override
+	public void tick()
+	{
+
+	}
+
+	/* not necessary for now
+	@Override
+	public void setAdaptee(Renderable npc)
+	{
+		if (npc == null || npc instanceof NPC)
+		{
+			this.npc = (NPC) npc;
+		}
+	}
+	*/
+
+	public void onGraphicChanged(int graphic)
+	{
+
+	}
+
+	@Override
 	public void invalidate()
 	{
 		super.invalidate();

@@ -29,11 +29,11 @@ import net.runelite.client.plugins.buffbar.Broadcaster;
 
 public interface Adapter
 {
-	void addBroadcaster(Broadcaster bc);
-
-	boolean removeBroadcaster(Broadcaster bc);
+	//void setAdaptee(Renderable adaptee);
 
 	Renderable getAdaptee();
+
+	void tick();
 
 	boolean isValid();
 

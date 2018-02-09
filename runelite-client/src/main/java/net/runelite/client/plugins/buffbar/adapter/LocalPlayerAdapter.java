@@ -27,7 +27,7 @@ package net.runelite.client.plugins.buffbar.adapter;
 import net.runelite.api.Player;
 import net.runelite.api.events.VarbitChanged;
 
-public class LocalPlayerAdapter extends PlayerAdapterImpl implements LocalPlayer
+public class LocalPlayerAdapter extends PlayerAdapterNew implements LocalPlayer
 {
 	public LocalPlayerAdapter(Player player)
 	{
@@ -38,5 +38,11 @@ public class LocalPlayerAdapter extends PlayerAdapterImpl implements LocalPlayer
 	public void onVarbitChanged(VarbitChanged event)
 	{
 
+	}
+
+	@Override
+	public void tick()
+	{
+		super.tick();
 	}
 }

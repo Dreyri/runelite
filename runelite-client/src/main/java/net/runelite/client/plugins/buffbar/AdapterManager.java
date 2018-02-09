@@ -25,25 +25,29 @@
 package net.runelite.client.plugins.buffbar;
 
 import com.google.common.eventbus.Subscribe;
+import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
 import net.runelite.api.NPC;
 import net.runelite.api.Player;
 import net.runelite.api.events.GameStateChanged;
+import net.runelite.api.events.GameTick;
+import net.runelite.api.events.GraphicChanged;
 import net.runelite.api.events.VarbitChanged;
-import net.runelite.client.plugins.buffbar.adapter.LocalPlayer;
 import net.runelite.client.plugins.buffbar.adapter.NPCAdapter;
-import net.runelite.client.plugins.buffbar.adapter.PlayerAdapterImpl;
+import net.runelite.client.plugins.buffbar.adapter.PlayerAdapterNew;
 
+import java.util.ArrayList;
 import java.util.List;
 
+@Slf4j
 public class AdapterManager
 {
 	private Client client;
 
-	private LocalPlayer localPlayer;
+	private PlayerAdapterNew localPlayer;
 
-	private List<PlayerAdapterImpl> playerAdapters;
+	private List<PlayerAdapterNew> playerAdapters;
 	private List<NPCAdapter> npcAdapters;
 
 	/**
@@ -54,12 +58,40 @@ public class AdapterManager
 	public AdapterManager(Client client)
 	{
 		this.client = client;
+
+		this.playerAdapters = new ArrayList<>();
+		this.npcAdapters = new ArrayList<>();
+		this.localPlayer = null;
 	}
 
 	@Subscribe
 	public void onVarbitsChanged(VarbitChanged event)
 	{
-		localPlayer.onVarbitChanged(event);
+		//localPlayer.onVarbitChanged(event);
+	}
+
+	/**
+	 * precondition: all players/npcs which have their graphic changed are valid
+	 * @param event
+	 */
+	@Subscribe
+	public void onGraphicChanged(GraphicChanged event)
+	{
+		for (PlayerAdapterNew adapter : playerAdapters)
+		{
+			if (adapter.getAdaptee() == event.getActor())
+			{
+				adapter.onGraphicChanged(((Player) adapter.getAdaptee()).getGraphic());
+			}
+		}
+
+		for (NPCAdapter adapter : npcAdapters)
+		{
+			if (adapter.getAdaptee() == event.getActor())
+			{
+				adapter.onGraphicChanged(((NPC) adapter.getAdaptee()).getGraphic());
+			}
+		}
 	}
 
 	@Subscribe
@@ -68,12 +100,65 @@ public class AdapterManager
 		if (event.getGameState() == GameState.HOPPING)
 		{
 			this.clearNPCs();
+			this.clearLocalPlayer();
+			this.clearPlayers();
 		}
 		else if (event.getGameState() == GameState.LOGGED_IN && lastGameState != GameState.LOADING)
 		{
 			this.populateNPCs();
 			this.populatePlayers();
-			this.getLocalPlayer();
+			this.localPlayer = this.getLocalPlayer();
+		}
+	}
+
+	@Subscribe
+	public void onGameTick(GameTick event)
+	{
+		this.repopulate();
+
+		log.info("Executing tick on {} NPCs", npcAdapters.size());
+		for (NPCAdapter npc : npcAdapters)
+		{
+			if (npc.isValid())
+				npc.tick();
+		}
+
+		log.info("Executing tick on {} Players", playerAdapters.size());
+		for (PlayerAdapterNew player : playerAdapters)
+		{
+			if (player.isValid())
+				player.tick();
+		}
+
+		if (localPlayer == null)
+		{
+			this.localPlayer = getLocalPlayer();
+		}
+		else
+			{
+			localPlayer.tick();
+		}
+	}
+
+	public void repopulate()
+	{
+		repopulateNPCs();
+	}
+
+	public void repopulateNPCs()
+	{
+		List<NPC> cachedNPCs = client.getNpcs();
+
+		for (NPC npc : cachedNPCs)
+		{
+			if (npcAdapters.stream().filter(npcAdapter -> npcAdapter.getAdaptee().equals(npc)).findFirst().isPresent())
+			{
+				continue;
+			}
+			else
+			{
+				npcAdapters.add(new NPCAdapter(npc));
+			}
 		}
 	}
 
@@ -84,26 +169,77 @@ public class AdapterManager
 	{
 		if (npcAdapters.size() > 0)
 		{
-			throw new IllegalStateException("npcAdapters must be empty before populating");
+			throw new IllegalStateException("npcAdapters must be empty before populating!");
 		}
 
 		List<NPC> allCachedNPCs = client.getNpcs();
 
-
+		for (NPC npc : allCachedNPCs)
+		{
+			this.npcAdapters.add(new NPCAdapter(npc));
+		}
 	}
 
 	public void populatePlayers()
 	{
-		//TODO
+		if (playerAdapters.size() > 0)
+		{
+			throw new IllegalStateException("playerAdapters must be empty before populating!");
+		}
+
+		List<Player> allCachedPlayers = client.getPlayers();
+		Player localPlayer = client.getLocalPlayer();
+
+		for (Player player : allCachedPlayers)
+		{
+			//don't add the local player
+			if (player == localPlayer)
+				continue;
+
+			this.playerAdapters.add(new PlayerAdapterNew(player));
+		}
 	}
 
-	public void getLocalPlayer()
+	public PlayerAdapterNew getLocalPlayer()
 	{
-		//TODO
+		if (localPlayer == null || !localPlayer.isValid())
+		{
+			Player localPlayerRl = client.getLocalPlayer();
+			if (localPlayerRl == null)
+			{
+				localPlayer = null;
+			}
+			else
+			{
+				localPlayer = new PlayerAdapterNew(localPlayerRl);
+			}
+		}
+
+		return localPlayer;
 	}
 
 	public void clearNPCs()
 	{
-		//TODO
+		for (NPCAdapter adapter : npcAdapters)
+		{
+			adapter.invalidate();
+		}
+
+		npcAdapters.clear();
+	}
+
+	public void clearLocalPlayer()
+	{
+		localPlayer.invalidate();
+	}
+
+	public void clearPlayers()
+	{
+		for (PlayerAdapterNew player : playerAdapters)
+		{
+			player.invalidate();
+		}
+
+		playerAdapters.clear();
 	}
 }

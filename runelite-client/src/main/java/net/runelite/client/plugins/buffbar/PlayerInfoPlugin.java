@@ -51,6 +51,8 @@ public class PlayerInfoPlugin extends Plugin
 	@Inject
 	private PlayerInfoConfig config;
 
+	private AdapterManager manager;
+
 	PlayerInfoOverlay playerInfoOverlay;
 
 	private PlayerAdapter localPlayer;
@@ -69,48 +71,26 @@ public class PlayerInfoPlugin extends Plugin
 	@Subscribe
 	public void onGameStateChanged(GameStateChanged event)
 	{
-		if (event.getGameState() == GameState.HOPPING || event.getGameState() == GameState.LOGIN_SCREEN)
-		{
-			localPlayer = null;
-		}
-
-		if (event.getGameState() == GameState.LOGGED_IN)
-		{
-			if (localPlayer == null)
-			{
-				Player self = client.getLocalPlayer();
-
-				if (self != null)
-				{
-					localPlayer = new PlayerAdapter(self);
-				}
-			}
-		}
+		manager.onGamestateChanged(event);
 	}
 
 	@Subscribe
 	public void onTick(GameTick event)
 	{
-		//localPlayer.tick();
+		manager.onGameTick(event);
 	}
 
 	@Subscribe
-	public void onAnimationChange(GraphicChanged event)
+	public void onGraphicChange(GraphicChanged event)
 	{
-		if (localPlayer == null || localPlayer.getPlayer() == null)
-		{
-			return;
-		}
-		if (event.getActor() == localPlayer.getPlayer())
-		{
-			localPlayer.animationChanged();
-		}
+		manager.onGraphicChanged(event);
 	}
 
 	@Override
 	protected void startUp() throws Exception
 	{
 		playerInfoOverlay = new PlayerInfoOverlay(client, config, this);
+		manager = new AdapterManager(client);
 	}
 
 	@Override
