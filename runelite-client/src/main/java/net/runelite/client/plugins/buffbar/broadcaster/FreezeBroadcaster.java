@@ -59,6 +59,8 @@ public class FreezeBroadcaster
 			return;
 		}
 
+		log.info("player was frozen with {}", type.getName());
+
 		this.type = type;
 		this.queuedFreeze = true;
 	}

@@ -31,8 +31,14 @@ public class PlayerAdapterNew extends BaseAdapter
 	}
 
 	@Override
-	public void tick() {
+	public void tick()
+	{
 		freeze.tick();
+	}
+
+	public String getName()
+	{
+		return this.name;
 	}
 
 	@Override

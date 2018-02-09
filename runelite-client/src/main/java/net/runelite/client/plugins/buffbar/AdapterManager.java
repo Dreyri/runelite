@@ -38,7 +38,9 @@ import net.runelite.client.plugins.buffbar.adapter.NPCAdapter;
 import net.runelite.client.plugins.buffbar.adapter.PlayerAdapterNew;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Slf4j
 public class AdapterManager
@@ -107,14 +109,23 @@ public class AdapterManager
 		{
 			this.populateNPCs();
 			this.populatePlayers();
-			this.localPlayer = this.getLocalPlayer();
+			this.getLocalPlayer();
 		}
+
+		lastGameState = event.getGameState();
 	}
 
 	@Subscribe
 	public void onGameTick(GameTick event)
 	{
 		this.repopulate();
+
+		Set<String> duplicates = findDuplicates(playerAdapters);
+
+		for (String name : duplicates)
+		{
+			log.info("duplicate: " + name);
+		}
 
 		log.info("Executing tick on {} NPCs", npcAdapters.size());
 		for (NPCAdapter npc : npcAdapters)
@@ -132,10 +143,11 @@ public class AdapterManager
 
 		if (localPlayer == null)
 		{
-			this.localPlayer = getLocalPlayer();
+			getLocalPlayer();
 		}
 		else
-			{
+		{
+			log.info("Executing tick on local player: {}", ((Player) localPlayer.getAdaptee()).getName());
 			localPlayer.tick();
 		}
 	}
@@ -143,6 +155,8 @@ public class AdapterManager
 	public void repopulate()
 	{
 		repopulateNPCs();
+		repopulatePlayers();
+		getLocalPlayer();
 	}
 
 	public void repopulateNPCs()
@@ -158,6 +172,23 @@ public class AdapterManager
 			else
 			{
 				npcAdapters.add(new NPCAdapter(npc));
+			}
+		}
+	}
+
+	public void repopulatePlayers()
+	{
+		List<Player> cachedPlayers = client.getPlayers();
+
+		for (Player player : cachedPlayers)
+		{
+			if (playerAdapters.stream().filter(playerAdapter -> playerAdapter.getName().equals(player.getName())).findFirst().isPresent())
+			{
+				continue;
+			}
+			else
+			{
+				playerAdapters.add(new PlayerAdapterNew(player));
 			}
 		}
 	}
@@ -193,7 +224,7 @@ public class AdapterManager
 		for (Player player : allCachedPlayers)
 		{
 			//don't add the local player
-			if (player == localPlayer)
+			if (player.getName() == localPlayer.getName())
 				continue;
 
 			this.playerAdapters.add(new PlayerAdapterNew(player));
@@ -202,20 +233,20 @@ public class AdapterManager
 
 	public PlayerAdapterNew getLocalPlayer()
 	{
-		if (localPlayer == null || !localPlayer.isValid())
+		if (this.localPlayer == null || !this.localPlayer.isValid())
 		{
 			Player localPlayerRl = client.getLocalPlayer();
 			if (localPlayerRl == null)
 			{
-				localPlayer = null;
+				this.localPlayer = null;
 			}
 			else
 			{
-				localPlayer = new PlayerAdapterNew(localPlayerRl);
+				this.localPlayer = new PlayerAdapterNew(localPlayerRl);
 			}
 		}
 
-		return localPlayer;
+		return this.localPlayer;
 	}
 
 	public void clearNPCs()
@@ -241,5 +272,21 @@ public class AdapterManager
 		}
 
 		playerAdapters.clear();
+	}
+
+	public static Set<String> findDuplicates(List<PlayerAdapterNew> players)
+	{
+		Set<String> duplicates = new HashSet<>();
+		Set<String> testSet = new HashSet<>();
+
+		for (PlayerAdapterNew player : players)
+		{
+			if (!testSet.add(((Player) player.getAdaptee()).getName()))
+			{
+				duplicates.add(((Player) player.getAdaptee()).getName());
+			}
+		}
+
+		return duplicates;
 	}
 }
