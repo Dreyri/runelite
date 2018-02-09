@@ -44,4 +44,9 @@ public abstract class BaseAdapter implements Adapter
 	{
 		this.isValid = false;
 	}
+
+	protected void setValid(boolean valid)
+	{
+		this.isValid = valid;
+	}
 }

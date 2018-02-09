@@ -30,6 +30,21 @@ public class PlayerAdapterNew extends BaseAdapter
 		return this.player;
 	}
 
+	public void updatePlayer(Player player)
+	{
+		if (!this.getName().equals(player.getName()))
+		{
+			throw new IllegalStateException("cannot update with a different player! " + this.getName() + " -> " + player.getName());
+		}
+
+		this.player = player;
+
+		if(!this.isValid())
+		{
+			this.setValid(true);
+		}
+	}
+
 	@Override
 	public void tick()
 	{

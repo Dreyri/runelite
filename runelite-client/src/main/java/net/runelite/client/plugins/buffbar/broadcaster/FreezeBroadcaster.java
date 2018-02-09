@@ -86,8 +86,6 @@ public class FreezeBroadcaster
 			return;
 		}
 
-		log.info("player {} was frozen with {}", player.getName(), type.getName());
-
 		this.type = type;
 		this.queuedFreeze = true;
 	}
@@ -103,6 +101,7 @@ public class FreezeBroadcaster
 		if (this.type != null)
 		{
 			calculateRemainingFreeze();
+			return;
 		}
 
 		if (this.isImmune)
@@ -119,6 +118,7 @@ public class FreezeBroadcaster
 		{
 			reset(true);
 			this.remainingImmunityTicks = FREEZE_IMMUNITY_TICKS;
+			this.isImmune = true;
 			broadcastFreezeImmunity(this.remainingImmunityTicks);
 		}
 		else

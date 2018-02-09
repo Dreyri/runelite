@@ -40,6 +40,7 @@ import net.runelite.client.plugins.buffbar.adapter.PlayerAdapterNew;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
 @Slf4j
@@ -127,14 +128,14 @@ public class AdapterManager
 			log.info("duplicate: " + name);
 		}
 
-		log.info("Executing tick on {} NPCs", npcAdapters.size());
+		//log.info("Executing tick on {} NPCs", npcAdapters.size());
 		for (NPCAdapter npc : npcAdapters)
 		{
 			if (npc.isValid())
 				npc.tick();
 		}
 
-		log.info("Executing tick on {} Players", playerAdapters.size());
+		//log.info("Executing tick on {} Players", playerAdapters.size());
 		for (PlayerAdapterNew player : playerAdapters)
 		{
 			if (player.isValid())
@@ -147,7 +148,7 @@ public class AdapterManager
 		}
 		else
 		{
-			log.info("Executing tick on local player: {}", ((Player) localPlayer.getAdaptee()).getName());
+			//log.info("Executing tick on local player: {}", ((Player) localPlayer.getAdaptee()).getName());
 			localPlayer.tick();
 		}
 	}
@@ -182,14 +183,17 @@ public class AdapterManager
 
 		for (Player player : cachedPlayers)
 		{
-			if (playerAdapters.stream().filter(playerAdapter -> playerAdapter.getName().equals(player.getName())).findFirst().isPresent())
-			{
-				continue;
-			}
-			else
+			Optional<PlayerAdapterNew> adapterOptional = playerAdapters.stream().filter(playerAdapter -> playerAdapter.getName().equals(player.getName())).findFirst();
+
+			if (!adapterOptional.isPresent())
 			{
 				playerAdapters.add(new PlayerAdapterNew(player));
 			}
+			else
+			{
+				adapterOptional.get().updatePlayer(player);
+			}
+
 		}
 	}
 
