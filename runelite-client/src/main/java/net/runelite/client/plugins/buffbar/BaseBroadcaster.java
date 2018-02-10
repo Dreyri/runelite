@@ -1,7 +1,5 @@
 package net.runelite.client.plugins.buffbar;
 
-import net.runelite.api.Renderable;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,8 +12,21 @@ public class BaseBroadcaster<T> implements Broadcaster
 		listeners = new ArrayList<>();
 	}
 
-	@Override
-	public boolean accept(Renderable object) {
-		return false;
+	public boolean addListener(T listener)
+	{
+		return listeners.add(listener);
+	}
+
+	public boolean removeListener(T listener)
+	{
+		return listeners.remove(listener);
+	}
+
+	public void broadcastEvent(EventBroadcaster<T> broadcast)
+	{
+		for (T listener : listeners)
+		{
+			broadcast.broadcast(listener);
+		}
 	}
 }
