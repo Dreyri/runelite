@@ -14,7 +14,7 @@ public class FreezeBroadcaster extends BaseBroadcaster<FreezeListener>
 
 	PlayerAdapterNew player;
 
-	private boolean queuedFreeze;
+	private int queuedFreeze;
 	private int remainingTicks;
 	private FreezeType type;
 
@@ -34,7 +34,7 @@ public class FreezeBroadcaster extends BaseBroadcaster<FreezeListener>
 	public void onGraphicChanged(int graphic)
 	{
 		//don't register freeze if already frozen or immune
-		if (this.type != null || this.isImmune)
+		if (this.type != null)
 			return;
 
 		FreezeType type;
@@ -72,28 +72,36 @@ public class FreezeBroadcaster extends BaseBroadcaster<FreezeListener>
 			return;
 		}
 
+		if (this.queuedFreeze >= 0)
+			return;
+
 		this.type = type;
-		this.queuedFreeze = true;
+		this.queuedFreeze = 2;
 	}
 
 	public void tick()
 	{
-		if (queuedFreeze)
+		if (this.isImmune)
+		{
+			calculateRemainingImmunity();
+		}
+
+		--this.queuedFreeze;
+
+		if (this.queuedFreeze == 0)
 		{
 			calculateFreeze();
+			this.queuedFreeze = -1;
 			return;
 		}
 
-		if (this.type != null)
+		if (this.type != null && this.queuedFreeze < 0)
 		{
 			calculateRemainingFreeze();
 			return;
 		}
 
-		if (this.isImmune)
-		{
-			calculateRemainingImmunity();
-		}
+
 	}
 
 	public void calculateRemainingFreeze()
@@ -142,7 +150,7 @@ public class FreezeBroadcaster extends BaseBroadcaster<FreezeListener>
 			this.remainingTicks /= 2;
 		}
 
-		this.queuedFreeze = false;
+		this.queuedFreeze = -1;
 
 		broadcastFrozen(this.type, this.remainingTicks);
 	}
@@ -175,7 +183,7 @@ public class FreezeBroadcaster extends BaseBroadcaster<FreezeListener>
 	{
 		this.type = null;
 		this.remainingTicks = 0;
-		this.queuedFreeze = false;
+		this.queuedFreeze = -1;
 		this.isImmune = false;
 		this.remainingImmunityTicks = 0;
 		this.isFrozen = false;
