@@ -24,9 +24,23 @@
  */
 package net.runelite.client.plugins.buffbar;
 
+import java.awt.Color;
+
 public enum BuffType
 {
-	BUFF,
-	DEBUFF,
-	INFO
+	BUFF(Color.GREEN),
+	DEBUFF(Color.RED),
+	INFO(Color.BLUE);
+
+	private Color color;
+
+	BuffType(Color color)
+	{
+		this.color = color;
+	}
+
+	public Color getColor()
+	{
+		return this.color;
+	}
 }
