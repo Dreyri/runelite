@@ -68,4 +68,9 @@ public class PlayerAdapterNew extends BaseAdapter
 		if (this.player != null)
 			this.name = player.getName();
 	}
+
+	public FreezeBroadcaster getFreezeBroadcaster()
+	{
+		return freeze;
+	}
 }

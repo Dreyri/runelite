@@ -7,9 +7,6 @@ import net.runelite.client.plugins.buffbar.extras.FreezeType;
 import net.runelite.client.plugins.buffbar.extras.OverheadIcon;
 import net.runelite.client.plugins.buffbar.listener.FreezeListener;
 
-import java.util.ArrayList;
-import java.util.List;
-
 @Slf4j
 public class FreezeBroadcaster extends BaseBroadcaster<FreezeListener>
 {
@@ -152,25 +149,25 @@ public class FreezeBroadcaster extends BaseBroadcaster<FreezeListener>
 
 	public void broadcastFrozen(FreezeType type, int ticks)
 	{
-		log.info("{} frozen by {} for {} ticks", this.player.getName(), type.getName(), ticks);
+		log.debug("{} frozen by {} for {} ticks", this.player.getName(), type.getName(), ticks);
 		super.broadcastEvent(listener -> listener.frozen(type, ticks));
 	}
 
 	public void broadcastUnfrozen()
 	{
-		log.info("{} unfrozen", this.player.getName());
+		log.debug("{} unfrozen", this.player.getName());
 		super.broadcastEvent(listener -> listener.unfrozen());
 	}
 
 	public void broadcastFreezeImmunity(int ticks)
 	{
-		log.info("{} immune to freeze for {} ticks", this.player.getName(), ticks);
+		log.debug("{} immune to freeze for {} ticks", this.player.getName(), ticks);
 		super.broadcastEvent(listener -> listener.freezeImmune(ticks));
 	}
 
 	public void broadcastFreezeImmunityLifted()
 	{
-		log.info("{} is no longer immune to freezes", this.player.getName());
+		log.debug("{} is no longer immune to freezes", this.player.getName());
 		super.broadcastEvent(listener -> listener.freezeImmuneLifted());
 	}
 

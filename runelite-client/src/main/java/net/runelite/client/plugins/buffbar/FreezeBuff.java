@@ -24,33 +24,90 @@
  */
 package net.runelite.client.plugins.buffbar;
 
+import net.runelite.client.plugins.buffbar.extras.FreezeType;
 import net.runelite.client.plugins.buffbar.listener.FreezeListener;
 
 import java.awt.image.BufferedImage;
 
 public class FreezeBuff extends TimerBuff implements FreezeListener
 {
+	private FreezeType freezeType;
+
+	int ticks;
+
+	private boolean immune;
+	private boolean active;
+
+	public FreezeBuff()
+	{
+		super();
+
+		ticks = 0;
+		freezeType = null;
+		active = false;
+		immune = false;
+	}
+
 	@Override
 	public int getTicks()
 	{
-		return 0;
+		return ticks;
 	}
 
 	@Override
 	public BuffType getType()
 	{
-		return BuffType.DEBUFF;
+		if (immune)
+			return BuffType.BUFF;
+		else
+			return BuffType.DEBUFF;
 	}
 
 	@Override
 	public boolean isActive()
 	{
-		return false;
+		return active;
 	}
 
 	@Override
 	public BufferedImage getIcon()
 	{
+		if (freezeType != null)
+		{
+			return freezeType.getBufferedImage();
+		}
+
 		return null;
+	}
+
+	@Override
+	public void frozen(FreezeType type, int ticks)
+	{
+		this.freezeType = type;
+		this.ticks = ticks;
+		this.active = active;
+	}
+
+	@Override
+	public void unfrozen()
+	{
+		this.active = false;
+		this.ticks = 0;
+	}
+
+	@Override
+	public void freezeImmune(int ticks)
+	{
+		this.active = true;
+		this.ticks = ticks;
+		this.immune = true;
+	}
+
+	@Override
+	public void freezeImmuneLifted()
+	{
+		this.active = false;
+		this.ticks = 0;
+		this.immune = false;
 	}
 }

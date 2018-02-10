@@ -3,7 +3,7 @@ package net.runelite.client.plugins.buffbar;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
 
-public abstract class BuffIcon implements Comparable<BuffIcon>
+public class BuffIcon implements Comparable<BuffIcon>
 {
 	public static int BUFF_ICON_SIZE = 20;
 
@@ -13,11 +13,10 @@ public abstract class BuffIcon implements Comparable<BuffIcon>
 	private BuffType type;
 	private Dimension dimension;
 
-	public BuffIcon(Buff buff, BuffPriority priority, BuffType type)
+	public BuffIcon(Buff buff, BuffPriority priority)
 	{
 		this.buff = buff;
 		this.priority = priority;
-		this.type = type;
 		dimension = new Dimension(BUFF_ICON_SIZE, BUFF_ICON_SIZE);
 	}
 
@@ -30,6 +29,11 @@ public abstract class BuffIcon implements Comparable<BuffIcon>
 	{
 
 		return getDimension();
+	}
+
+	public boolean isActive()
+	{
+		return buff.isActive();
 	}
 
 	@Override

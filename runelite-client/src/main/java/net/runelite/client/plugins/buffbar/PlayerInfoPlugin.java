@@ -36,6 +36,7 @@ import net.runelite.client.config.ConfigManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.plugins.buffbar.adapter.PlayerAdapter;
+import net.runelite.client.plugins.buffbar.adapter.PlayerAdapterNew;
 import net.runelite.client.ui.overlay.Overlay;
 
 import javax.inject.Inject;
@@ -55,11 +56,11 @@ public class PlayerInfoPlugin extends Plugin
 
 	PlayerInfoOverlay playerInfoOverlay;
 
-	private PlayerAdapter localPlayer;
+	PlayerAdapterNew localPlayer;
+	BuffIcon freezeBuffLocalIcon;
 
 	public PlayerInfoPlugin()
 	{
-		localPlayer = null;
 	}
 
 	@Provides
@@ -78,6 +79,14 @@ public class PlayerInfoPlugin extends Plugin
 	public void onTick(GameTick event)
 	{
 		manager.onGameTick(event);
+		
+		if (localPlayer == null || !localPlayer.isValid())
+		{
+			localPlayer = manager.getLocalPlayer();
+			FreezeBuff freezeBuffLocal = new FreezeBuff();
+			freezeBuffLocalIcon = new BuffIcon(freezeBuffLocal, BuffPriority.FREEZE);
+			localPlayer.getFreezeBroadcaster().addListener(freezeBuffLocal);
+		}
 	}
 
 	@Subscribe
@@ -99,8 +108,13 @@ public class PlayerInfoPlugin extends Plugin
 		return playerInfoOverlay;
 	}
 
-	public PlayerAdapter getLocalPlayer()
+	public PlayerAdapterNew getLocalPlayer()
 	{
 		return localPlayer;
+	}
+
+	public BuffIcon getFreezeBuffLocalIcon()
+	{
+		return freezeBuffLocalIcon;
 	}
 }
