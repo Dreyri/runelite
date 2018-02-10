@@ -25,11 +25,13 @@
 package net.runelite.client.plugins.buffbar;
 
 import net.runelite.api.Client;
+import net.runelite.client.ui.FontManager;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
 
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.Point;
 
@@ -41,6 +43,8 @@ public class PlayerInfoOverlay extends Overlay
 
 	Buffbar buffbar;
 
+	Font font;
+
 	public PlayerInfoOverlay(Client client, PlayerInfoConfig config, PlayerInfoPlugin plugin)
 	{
 		this.client = client;
@@ -51,14 +55,18 @@ public class PlayerInfoOverlay extends Overlay
 
 		setPosition(OverlayPosition.DYNAMIC);
 		setLayer(OverlayLayer.ALWAYS_ON_TOP);
+
+		font = FontManager.getRunescapeFont()
+				.deriveFont(Font.BOLD, 11);
 	}
 
 	@Override
 	public Dimension render(Graphics2D graphics, Point parent)
 	{
 		Graphics2D infoGraphics = graphics;
+		infoGraphics.setFont(font);
 
-		infoGraphics.translate(500, 300);
+		infoGraphics.translate(400, 300);
 
 		BuffIcon icon = plugin.getFreezeBuffLocalIcon();
 
