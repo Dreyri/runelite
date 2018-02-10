@@ -24,9 +24,11 @@
  */
 package net.runelite.client.plugins.buffbar;
 
+import net.runelite.client.plugins.buffbar.listener.FreezeListener;
+
 import java.awt.image.BufferedImage;
 
-public class FreezeBuff extends TimerBuff
+public class FreezeBuff extends TimerBuff implements FreezeListener
 {
 	@Override
 	public int getTicks()

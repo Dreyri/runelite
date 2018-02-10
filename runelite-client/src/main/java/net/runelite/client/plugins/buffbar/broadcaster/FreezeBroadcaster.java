@@ -1,6 +1,7 @@
 package net.runelite.client.plugins.buffbar.broadcaster;
 
 import lombok.extern.slf4j.Slf4j;
+import net.runelite.client.plugins.buffbar.BaseBroadcaster;
 import net.runelite.client.plugins.buffbar.adapter.PlayerAdapterNew;
 import net.runelite.client.plugins.buffbar.extras.FreezeType;
 import net.runelite.client.plugins.buffbar.extras.OverheadIcon;
@@ -10,13 +11,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Slf4j
-public class FreezeBroadcaster
+public class FreezeBroadcaster extends BaseBroadcaster<FreezeListener>
 {
 	public static final int FREEZE_IMMUNITY_TICKS = 6;
 
 	PlayerAdapterNew player;
-
-	private List<FreezeListener> freezeListeners;
 
 	private boolean queuedFreeze;
 	private int remainingTicks;
@@ -29,20 +28,10 @@ public class FreezeBroadcaster
 
 	public FreezeBroadcaster(PlayerAdapterNew player)
 	{
+		super();
+
 		this.player = player;
-
-		this.freezeListeners = new ArrayList<>();
 		reset(false);
-	}
-
-	public boolean addListener(FreezeListener listener)
-	{
-		return this.freezeListeners.add(listener);
-	}
-
-	public boolean removeListener(FreezeListener listener)
-	{
-		return this.freezeListeners.remove(listener);
 	}
 
 	public void onGraphicChanged(int graphic)

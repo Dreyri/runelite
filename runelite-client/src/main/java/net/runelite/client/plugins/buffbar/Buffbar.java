@@ -9,16 +9,13 @@ public class Buffbar
 {
 	private TreeSet<BuffIcon> buffIcons;
 
-	private int buffsPerRow;
-
 	private Dimension dimension;
 
 	public Buffbar()
 	{
 		buffIcons = new TreeSet<>();
-		buffsPerRow = 5;
 
-		dimension = new Dimension(buffsPerRow * BuffIcon.BUFF_ICON_SIZE, 5 * BuffIcon.BUFF_ICON_SIZE);
+		dimension = new Dimension(10 * BuffIcon.BUFF_ICON_SIZE, 5 * BuffIcon.BUFF_ICON_SIZE);
 	}
 
 	public boolean addBuff(BuffIcon icon)
