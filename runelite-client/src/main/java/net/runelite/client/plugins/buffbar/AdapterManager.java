@@ -26,6 +26,7 @@ package net.runelite.client.plugins.buffbar;
 
 import com.google.common.eventbus.Subscribe;
 import lombok.extern.slf4j.Slf4j;
+import net.runelite.api.Actor;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
 import net.runelite.api.NPC;
@@ -64,7 +65,7 @@ public class AdapterManager
 
 		this.playerAdapters = new ArrayList<>();
 		this.npcAdapters = new ArrayList<>();
-		this.localPlayer = null;
+		this.localPlayer = new PlayerAdapterNew(null);
 	}
 
 	@Subscribe
@@ -84,7 +85,7 @@ public class AdapterManager
 		{
 			if (adapter.getAdaptee() == event.getActor())
 			{
-				adapter.onGraphicChanged(((Player) adapter.getAdaptee()).getGraphic());
+				adapter.onGraphicChanged(((Actor) adapter.getAdaptee()).getGraphic());
 			}
 		}
 
@@ -92,8 +93,13 @@ public class AdapterManager
 		{
 			if (adapter.getAdaptee() == event.getActor())
 			{
-				adapter.onGraphicChanged(((NPC) adapter.getAdaptee()).getGraphic());
+				adapter.onGraphicChanged(((Actor) adapter.getAdaptee()).getGraphic());
 			}
+		}
+
+		if (event.getActor() == localPlayer.getAdaptee())
+		{
+			localPlayer.onGraphicChanged(((Actor) localPlayer.getAdaptee()).getGraphic());
 		}
 	}
 
@@ -187,7 +193,8 @@ public class AdapterManager
 
 			if (!adapterOptional.isPresent())
 			{
-				playerAdapters.add(new PlayerAdapterNew(player));
+				if (player != client.getLocalPlayer())
+					playerAdapters.add(new PlayerAdapterNew(player));
 			}
 			else
 			{
@@ -228,7 +235,7 @@ public class AdapterManager
 		for (Player player : allCachedPlayers)
 		{
 			//don't add the local player
-			if (player.getName() == localPlayer.getName())
+			if (player == localPlayer)
 				continue;
 
 			this.playerAdapters.add(new PlayerAdapterNew(player));
@@ -237,16 +244,16 @@ public class AdapterManager
 
 	public PlayerAdapterNew getLocalPlayer()
 	{
-		if (this.localPlayer == null || !this.localPlayer.isValid())
+		if (this.localPlayer.getAdaptee() == null || !this.localPlayer.isValid())
 		{
 			Player localPlayerRl = client.getLocalPlayer();
 			if (localPlayerRl == null)
 			{
-				this.localPlayer = null;
+				this.localPlayer.invalidate();
 			}
 			else
 			{
-				this.localPlayer = new PlayerAdapterNew(localPlayerRl);
+				this.localPlayer.updatePlayer(localPlayerRl);
 			}
 		}
 

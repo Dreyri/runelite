@@ -76,8 +76,12 @@ public class FreezeBuff extends TimerBuff implements FreezeListener
 		{
 			return freezeType.getBufferedImage();
 		}
+		else
+		{
+			return FreezeType.ICE_BARRAGE.getBufferedImage();
+		}
 
-		return null;
+		//return null;
 	}
 
 	@Override

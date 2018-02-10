@@ -149,25 +149,25 @@ public class FreezeBroadcaster extends BaseBroadcaster<FreezeListener>
 
 	public void broadcastFrozen(FreezeType type, int ticks)
 	{
-		log.debug("{} frozen by {} for {} ticks", this.player.getName(), type.getName(), ticks);
+		log.info("{} frozen by {} for {} ticks", this.player.getName(), type.getName(), ticks);
 		super.broadcastEvent(listener -> listener.frozen(type, ticks));
 	}
 
 	public void broadcastUnfrozen()
 	{
-		log.debug("{} unfrozen", this.player.getName());
+		log.info("{} unfrozen", this.player.getName());
 		super.broadcastEvent(listener -> listener.unfrozen());
 	}
 
 	public void broadcastFreezeImmunity(int ticks)
 	{
-		log.debug("{} immune to freeze for {} ticks", this.player.getName(), ticks);
+		log.info("{} immune to freeze for {} ticks", this.player.getName(), ticks);
 		super.broadcastEvent(listener -> listener.freezeImmune(ticks));
 	}
 
 	public void broadcastFreezeImmunityLifted()
 	{
-		log.debug("{} is no longer immune to freezes", this.player.getName());
+		log.info("{} is no longer immune to freezes", this.player.getName());
 		super.broadcastEvent(listener -> listener.freezeImmuneLifted());
 	}
 

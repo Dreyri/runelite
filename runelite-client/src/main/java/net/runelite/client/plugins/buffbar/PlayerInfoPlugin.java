@@ -78,8 +78,6 @@ public class PlayerInfoPlugin extends Plugin
 	@Subscribe
 	public void onTick(GameTick event)
 	{
-		manager.onGameTick(event);
-		
 		if (localPlayer == null || !localPlayer.isValid())
 		{
 			localPlayer = manager.getLocalPlayer();
@@ -87,6 +85,8 @@ public class PlayerInfoPlugin extends Plugin
 			freezeBuffLocalIcon = new BuffIcon(freezeBuffLocal, BuffPriority.FREEZE);
 			localPlayer.getFreezeBroadcaster().addListener(freezeBuffLocal);
 		}
+
+		manager.onGameTick(event);
 	}
 
 	@Subscribe

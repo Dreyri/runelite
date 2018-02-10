@@ -1,7 +1,9 @@
 package net.runelite.client.plugins.buffbar;
 
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
+import java.awt.image.BufferedImage;
 
 public class BuffIcon implements Comparable<BuffIcon>
 {
@@ -27,7 +29,12 @@ public class BuffIcon implements Comparable<BuffIcon>
 
 	public Dimension render(Graphics2D graphics)
 	{
+		BufferedImage icon = buff.getIcon();
 
+		graphics.setColor(Color.BLACK);
+		graphics.drawRect(0, 0, BUFF_ICON_SIZE, BUFF_ICON_SIZE);
+
+		graphics.drawImage(icon, 0, 0, BUFF_ICON_SIZE - 2, BUFF_ICON_SIZE - 2, null);
 		return getDimension();
 	}
 

@@ -32,14 +32,15 @@ public class PlayerAdapterNew extends BaseAdapter
 
 	public void updatePlayer(Player player)
 	{
-		if (!this.getName().equals(player.getName()))
+		if (this.getName() != null && !this.getName().equals(player.getName()))
 		{
 			throw new IllegalStateException("cannot update with a different player! " + this.getName() + " -> " + player.getName());
 		}
 
 		this.player = player;
+		retrieveName();
 
-		if(!this.isValid())
+		if (!this.isValid())
 		{
 			this.setValid(true);
 		}

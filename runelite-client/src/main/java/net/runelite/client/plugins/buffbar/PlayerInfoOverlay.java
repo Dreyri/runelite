@@ -25,19 +25,13 @@
 package net.runelite.client.plugins.buffbar;
 
 import net.runelite.api.Client;
-import net.runelite.api.Perspective;
-import net.runelite.api.Player;
-import net.runelite.client.plugins.buffbar.adapter.PlayerAdapter;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
-import net.runelite.client.ui.overlay.OverlayUtil;
 
-import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.Point;
-import java.awt.Polygon;
 
 public class PlayerInfoOverlay extends Overlay
 {
@@ -62,23 +56,17 @@ public class PlayerInfoOverlay extends Overlay
 	@Override
 	public Dimension render(Graphics2D graphics, Point parent)
 	{
-		if (config.drawLocalTileEnabled() && plugin.getLocalPlayer() != null)
-		{
-			PlayerAdapter localPlayerAdapter = plugin.getLocalPlayer();
-			Player localPlayer = localPlayerAdapter.getPlayer();
+		Graphics2D infoGraphics = graphics;
 
-			if (localPlayer != null)
-			{
-				net.runelite.api.Point tileLocation = localPlayer.getRegionLocation();
+		infoGraphics.translate(500, 300);
 
-				Polygon tilePoly = Perspective.getCanvasTilePoly(client, tileLocation);
+		BuffIcon icon = plugin.getFreezeBuffLocalIcon();
 
-				if (tilePoly != null)
-				{
-					OverlayUtil.renderPolygon(graphics, tilePoly, Color.BLUE);
-				}
-			}
-		}
+		if (icon != null)
+			icon.render(infoGraphics);
+
+		infoGraphics.dispose();
+
 		return null;
 	}
 }
