@@ -16,7 +16,7 @@ public class PlayerAdapterNew extends BaseAdapter
 		this.player = player;
 		retrieveName();
 
-		this.freeze = new FreezeBroadcaster(this);
+		this.freeze = new FreezeBroadcaster(this, false);
 	}
 
 	public void onGraphicChanged(int graphic)
@@ -73,5 +73,11 @@ public class PlayerAdapterNew extends BaseAdapter
 	public FreezeBroadcaster getFreezeBroadcaster()
 	{
 		return freeze;
+	}
+
+	@Override
+	public boolean isValid()
+	{
+		return super.isValid() ? getAdaptee() != null : super.isValid();
 	}
 }

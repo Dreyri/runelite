@@ -148,7 +148,7 @@ public class AdapterManager
 				player.tick();
 		}
 
-		if (localPlayer == null)
+		if (localPlayer == null || !localPlayer.isValid())
 		{
 			getLocalPlayer();
 		}

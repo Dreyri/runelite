@@ -17,26 +17,25 @@ public class FreezeBroadcaster extends BaseBroadcaster<FreezeListener>
 	private int queuedFreeze;
 	private int remainingTicks;
 	private FreezeType type;
+	private FreezeType queuedType;
 
 	private int remainingImmunityTicks;
 
-	private boolean isFrozen;
-	private boolean isImmune;
+	private boolean ourPid;
 
-	public FreezeBroadcaster(PlayerAdapterNew player)
+	public FreezeBroadcaster(PlayerAdapterNew player, boolean ourPid)
 	{
 		super();
 
+		this.ourPid = ourPid;
 		this.player = player;
+		this.type = null;
+		this.queuedType = null;
 		reset(false);
 	}
 
 	public void onGraphicChanged(int graphic)
 	{
-		//don't register freeze if already frozen or immune
-		if (this.type != null)
-			return;
-
 		FreezeType type;
 
 		if (graphic == FreezeType.ICE_RUSH.getGraphic())
@@ -75,13 +74,13 @@ public class FreezeBroadcaster extends BaseBroadcaster<FreezeListener>
 		if (this.queuedFreeze >= 0)
 			return;
 
-		this.type = type;
-		this.queuedFreeze = 2;
+		this.queuedType = type;
+		this.queuedFreeze = ourPid ? 1 : 2;
 	}
 
 	public void tick()
 	{
-		if (this.isImmune)
+		if (this.remainingImmunityTicks > 0)
 		{
 			calculateRemainingImmunity();
 		}
@@ -95,7 +94,7 @@ public class FreezeBroadcaster extends BaseBroadcaster<FreezeListener>
 			return;
 		}
 
-		if (this.type != null && this.queuedFreeze < 0)
+		if (this.remainingTicks > 0 && this.queuedFreeze < 0)
 		{
 			calculateRemainingFreeze();
 			return;
@@ -112,7 +111,6 @@ public class FreezeBroadcaster extends BaseBroadcaster<FreezeListener>
 		{
 			reset(true);
 			this.remainingImmunityTicks = FREEZE_IMMUNITY_TICKS;
-			this.isImmune = true;
 			broadcastFreezeImmunity(this.remainingImmunityTicks);
 		}
 		else
@@ -138,12 +136,12 @@ public class FreezeBroadcaster extends BaseBroadcaster<FreezeListener>
 
 	public void calculateFreeze()
 	{
-		if (isImmune)
+		if (this.remainingImmunityTicks > 0 || this.remainingTicks > 0)
 			return;
 
-		boolean halfOnPray = type.isHalvedOnPray();
+		boolean halfOnPray = this.queuedType.isHalvedOnPray();
 		OverheadIcon prayer = OverheadIcon.NONE;
-		this.remainingTicks = type.getTicks();
+		this.remainingTicks = this.queuedType.getTicks();
 
 		if (halfOnPray && prayer == OverheadIcon.PROTECT_MAGIC)
 		{
@@ -151,6 +149,9 @@ public class FreezeBroadcaster extends BaseBroadcaster<FreezeListener>
 		}
 
 		this.queuedFreeze = -1;
+
+		this.type = this.queuedType;
+		this.queuedType = null;
 
 		broadcastFrozen(this.type, this.remainingTicks);
 	}
@@ -181,12 +182,9 @@ public class FreezeBroadcaster extends BaseBroadcaster<FreezeListener>
 
 	public void reset(boolean broadcast)
 	{
-		this.type = null;
 		this.remainingTicks = 0;
 		this.queuedFreeze = -1;
-		this.isImmune = false;
 		this.remainingImmunityTicks = 0;
-		this.isFrozen = false;
 
 		if (broadcast)
 			broadcastUnfrozen();
