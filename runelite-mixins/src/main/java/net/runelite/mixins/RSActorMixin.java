@@ -28,6 +28,7 @@ import java.awt.Graphics2D;
 import java.awt.Polygon;
 import java.awt.image.BufferedImage;
 import net.runelite.api.Actor;
+import net.runelite.api.FreezeInfo;
 import net.runelite.api.NPC;
 import net.runelite.api.Perspective;
 import static net.runelite.api.Perspective.LOCAL_COORD_BITS;
@@ -54,6 +55,9 @@ public abstract class RSActorMixin implements RSActor
 {
 	@Shadow("clientInstance")
 	private static RSClient client;
+
+	@Inject
+	private FreezeInfo freeze;
 
 	@Inject
 	@Override
