@@ -64,6 +64,8 @@ public interface Actor extends Renderable
 
 	Point getRegionLocation();
 
+	FreezeInfo getFreeze();
+
 	/**
 	 * Returns the logical height of the actor's model. This is roughly where the health bar is drawn.
 	 */
