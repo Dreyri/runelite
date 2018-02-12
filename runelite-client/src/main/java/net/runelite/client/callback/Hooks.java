@@ -48,6 +48,7 @@ import net.runelite.api.Region;
 import net.runelite.client.RuneLite;
 import net.runelite.client.chat.ChatMessageManager;
 import net.runelite.client.game.DeathChecker;
+import net.runelite.client.game.FreezeManager;
 import net.runelite.client.task.Scheduler;
 import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayRenderer;
@@ -70,6 +71,7 @@ public class Hooks
 	private static final ChatMessageManager chatMessageManager = injector.getInstance(ChatMessageManager.class);
 	private static final OverlayRenderer renderer = injector.getInstance(OverlayRenderer.class);
 	private static final DeathChecker death = new DeathChecker(client, eventBus);
+	private static final FreezeManager freeze = new FreezeManager(client, eventBus);
 	private static final GameTick tick = new GameTick();
 
 	private static long lastCheck;
