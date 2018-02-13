@@ -28,6 +28,7 @@ import java.awt.Polygon;
 import java.util.ArrayList;
 import java.util.List;
 import net.runelite.api.Model;
+import net.runelite.api.OverheadPrayer;
 import net.runelite.api.Perspective;
 import net.runelite.api.Point;
 import net.runelite.api.model.Triangle;
@@ -133,4 +134,12 @@ public abstract class RSPlayerMixin implements RSPlayer
 		}
 		return rotatedTriangles;
 	}
+
+	@Inject
+	@Override
+	public OverheadPrayer getOverheadPrayer()
+	{
+		return OverheadPrayer.fromId(this.getOverheadIcon());
+	}
+
 }
