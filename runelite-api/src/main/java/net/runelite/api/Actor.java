@@ -70,4 +70,18 @@ public interface Actor extends Renderable
 	 * Returns the logical height of the actor's model. This is roughly where the health bar is drawn.
 	 */
 	int getLogicalHeight();
+
+	/**
+	 * the tile within the current region the game says we are on.
+	 * As soon as movement starts you are located on this tile.
+	 * @return the point we are at within the region
+	 */
+	Point getRegionTile();
+
+	/**
+	 * the tile within the world the game says we are on.
+	 * As soon as movement starts you are located on this tile.
+	 * @return the point we are at within the world
+	 */
+	Point getWorldTile();
 }

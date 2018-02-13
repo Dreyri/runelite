@@ -62,4 +62,10 @@ public interface RSActor extends RSRenderable, Actor
 	@Import("logicalHeight")
 	@Override
 	int getLogicalHeight();
+
+	@Import("pathX")
+	int[] getPathX();
+
+	@Import("pathY")
+	int[] getPathY();
 }
