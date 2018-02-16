@@ -280,4 +280,8 @@ public interface Client extends GameEngine
 	boolean isClanMember(String name);
 
 	List<Integer> getForceHiddenWidgetIds();
+
+	void setDrawFreezeBar(boolean draw);
+
+	boolean getDrawFreezeBar();
 }
