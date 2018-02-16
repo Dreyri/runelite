@@ -269,6 +269,9 @@ public class AttackIndicatorPlugin extends Plugin
 			touchedWidgets.add(new Pair<>(WidgetInfo.COMBAT_SPELL_TEXT, warnedMagic && hide));
 		}
 
+		//add auto retaliate if necessary
+		touchedWidgets.add(new Pair<>(WidgetInfo.COMBAT_AUTO_RETALIATE_BOX, config.removeAutoRetaliate()));
+
 		client.getForceHiddenWidgetIds().clear();
 
 		for (Pair<WidgetInfo, Boolean> pair : touchedWidgets)
