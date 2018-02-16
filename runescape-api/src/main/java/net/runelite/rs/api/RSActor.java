@@ -68,4 +68,7 @@ public interface RSActor extends RSRenderable, Actor
 
 	@Import("pathY")
 	int[] getPathY();
+
+	@Override
+	boolean hasComposition();
 }

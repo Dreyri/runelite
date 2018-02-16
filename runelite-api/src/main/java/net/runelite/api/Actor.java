@@ -84,4 +84,6 @@ public interface Actor extends Renderable
 	 * @return the point we are at within the world
 	 */
 	Point getWorldTile();
+
+	boolean hasComposition();
 }

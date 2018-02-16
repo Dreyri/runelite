@@ -142,4 +142,11 @@ public abstract class RSPlayerMixin implements RSPlayer
 		return OverheadPrayer.fromId(this.getOverheadIcon());
 	}
 
+	@Inject
+	@Override
+	public boolean hasComposition()
+	{
+		return this.getPlayerComposition() != null;
+	}
+
 }

@@ -31,4 +31,7 @@ public interface RSNPC extends RSActor, NPC
 {
 	@Import("composition")
 	RSNPCComposition getComposition();
+
+	@Override
+	boolean hasComposition();
 }

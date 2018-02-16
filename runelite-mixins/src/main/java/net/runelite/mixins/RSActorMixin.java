@@ -210,6 +210,13 @@ public abstract class RSActorMixin implements RSActor
 		return this.freeze;
 	}
 
+	@Inject
+	@Override
+	public boolean hasComposition()
+	{
+		return false;
+	}
+
 	@FieldHook("animation")
 	@Inject
 	public void animationChanged(int idx)

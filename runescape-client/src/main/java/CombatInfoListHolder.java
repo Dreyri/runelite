@@ -68,7 +68,8 @@ public class CombatInfoListHolder extends Node {
       signature = "(II)Lbb;",
       garbageValue = "1498758118"
    )
-   CombatInfo1 method1842(int var1) {
+   @Export("getCombatInfo1")
+   CombatInfo1 getCombatInfo1(int var1) {
       CombatInfo1 var2 = (CombatInfo1)this.combatInfo1.last();
       if(var2 != null && var2.cycle <= var1) {
          for(CombatInfo1 var3 = (CombatInfo1)this.combatInfo1.previous(); var3 != null && var3.cycle <= var1; var3 = (CombatInfo1)this.combatInfo1.previous()) {

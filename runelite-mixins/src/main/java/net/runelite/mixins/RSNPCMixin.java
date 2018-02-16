@@ -51,4 +51,11 @@ public abstract class RSNPCMixin implements RSNPC
 	{
 		return getComposition().getCombatLevel();
 	}
+
+	@Inject
+	@Override
+	public boolean hasComposition()
+	{
+		return this.getComposition() != null;
+	}
 }

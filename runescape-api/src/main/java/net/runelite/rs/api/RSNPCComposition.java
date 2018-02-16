@@ -51,4 +51,10 @@ public interface RSNPCComposition
 
 	@Import("combatLevel")
 	int getCombatLevel();
+
+	@Import("configs")
+	int[] getConfigs();
+
+	@Import("transform")
+	RSNPCComposition transform();
 }

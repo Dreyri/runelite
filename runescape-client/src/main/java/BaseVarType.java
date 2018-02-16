@@ -134,7 +134,7 @@ public enum BaseVarType implements Enumerated {
             class3.characterToScreen(var0, var0.logicalHeight + 15);
 
             for(CombatInfoListHolder var9 = (CombatInfoListHolder)var0.combatInfoList.last(); var9 != null; var9 = (CombatInfoListHolder)var0.combatInfoList.previous()) {
-               CombatInfo1 var10 = var9.method1842(Client.gameCycle);
+               CombatInfo1 var10 = var9.getCombatInfo1(Client.gameCycle);
                if(var10 == null) {
                   if(var9.method1841()) {
                      var9.unlink();

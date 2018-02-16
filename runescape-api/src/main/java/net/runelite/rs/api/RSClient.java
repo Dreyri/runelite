@@ -461,4 +461,7 @@ public interface RSClient extends RSGameEngine, Client
 
 	@Override
 	List<Integer> getForceHiddenWidgetIds();
+
+	@Import("Rasterizer2D_fillRectangle")
+	void Rasterizer2D_fillRectangle(int x, int y, int width, int height, int color);
 }
