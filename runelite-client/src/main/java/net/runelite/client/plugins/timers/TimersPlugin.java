@@ -59,9 +59,15 @@ import javax.inject.Inject;
 import net.runelite.api.Actor;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
+import net.runelite.api.FreezeInfo;
+import net.runelite.api.FreezeType;
 import net.runelite.api.ItemID;
 import net.runelite.api.Prayer;
 import net.runelite.api.Varbits;
+import net.runelite.api.events.ActorFreeze;
+import net.runelite.api.events.ActorFreezeEnded;
+import net.runelite.api.events.ActorFreezeImmune;
+import net.runelite.api.events.ActorFreezeImmuneEnded;
 import net.runelite.api.events.GraphicChanged;
 import net.runelite.api.events.VarbitChanged;
 import net.runelite.client.config.ConfigManager;
@@ -384,65 +390,94 @@ public class TimersPlugin extends Plugin
 		{
 			createGameTimer(VENGEANCE);
 		}
+	}
 
+	@Subscribe
+	public void onFreezeStarted(ActorFreeze event)
+	{
 		if (config.showFreezes())
 		{
-			if (actor.getGraphic() == BIND.getGraphicId())
+			Actor freezee = event.getActor();
+
+			if (freezee != client.getLocalPlayer())
 			{
-				if (client.isPrayerActive(Prayer.PROTECT_FROM_MAGIC))
-				{
-					createGameTimer(HALFBIND);
-				}
-				else
-				{
-					createGameTimer(BIND);
-				}
+				return;
 			}
 
-			if (actor.getGraphic() == SNARE.getGraphicId())
-			{
-				if (client.isPrayerActive(Prayer.PROTECT_FROM_MAGIC))
-				{
-					createGameTimer(HALFSNARE);
-				}
-				else
-				{
-					createGameTimer(SNARE);
-				}
-			}
+			FreezeInfo info = freezee.getFreeze();
 
-			if (actor.getGraphic() == ENTANGLE.getGraphicId())
+			switch (info.getType())
 			{
-				if (client.isPrayerActive(Prayer.PROTECT_FROM_MAGIC))
-				{
-					createGameTimer(HALFENTANGLE);
-				}
-				else
-				{
-					createGameTimer(ENTANGLE);
-				}
-			}
-
-			if (actor.getGraphic() == ICERUSH.getGraphicId())
-			{
-				createGameTimer(ICERUSH);
-			}
-
-			if (actor.getGraphic() == ICEBURST.getGraphicId())
-			{
-				createGameTimer(ICEBURST);
-			}
-
-			if (actor.getGraphic() == ICEBLITZ.getGraphicId())
-			{
-				createGameTimer(ICEBLITZ);
-			}
-
-			if (actor.getGraphic() == ICEBARRAGE.getGraphicId())
-			{
-				createGameTimer(ICEBARRAGE);
+				case BIND:
+					if (info.getFrozen() < FreezeType.BIND.getTicks()) //if halved
+						createGameTimer(HALFBIND);
+					else
+						createGameTimer(BIND);
+					break;
+				case SNARE:
+					if (info.getFrozen() < FreezeType.SNARE.getTicks()) //if halved
+						createGameTimer(HALFSNARE);
+					else
+						createGameTimer(SNARE);
+					break;
+				case ENTANGLE:
+					if (info.getFrozen() < FreezeType.ENTANGLE.getTicks()) //if halved
+						createGameTimer(HALFENTANGLE);
+					else
+						createGameTimer(ENTANGLE);
+					break;
+				case ICE_RUSH:
+					createGameTimer(ICERUSH);
+					break;
+				case ICE_BURST:
+					createGameTimer(ICEBURST);
+					break;
+				case ICE_BLITZ:
+					createGameTimer(ICEBLITZ);
+					break;
+				case ICE_BARRAGE:
+					createGameTimer(ICEBARRAGE);
+					break;
 			}
 		}
+	}
+
+	@Subscribe
+	public void onFreezeEnded(ActorFreezeEnded event)
+	{
+		if (config.showFreezes())
+		{
+			Actor actor = event.getActor();
+
+			if (actor != client.getLocalPlayer())
+			{
+				return;
+			}
+
+			//freeze information is lost after freeze ends so attempt to remove all relevant timers
+			removeGameTimer(BIND);
+			removeGameTimer(HALFBIND);
+			removeGameTimer(SNARE);
+			removeGameTimer(HALFSNARE);
+			removeGameTimer(ENTANGLE);
+			removeGameTimer(HALFENTANGLE);
+			removeGameTimer(ICERUSH);
+			removeGameTimer(ICEBURST);
+			removeGameTimer(ICEBLITZ);
+			removeGameTimer(ICEBARRAGE);
+		}
+	}
+
+	@Subscribe
+	public void onFreezeImmunity(ActorFreezeImmune event)
+	{
+
+	}
+
+	@Subscribe
+	public void onFreezeImmunityEnded(ActorFreezeImmuneEnded event)
+	{
+
 	}
 
 	public void createGameTimer(GameTimer timer)
